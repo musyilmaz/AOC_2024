@@ -12,10 +12,21 @@ fn main() {
         }
         _ => {
             let day = args[1].as_str();
+            let part = args[2].as_str();
             let data = read_data_file(day);
 
             match day {
-                "day1" => day1::solve(data),
+                "day1" => match part {
+                    "part1" => {
+                        let _ = day1::solve_part1(data);
+                    }
+                    "part2" => {
+                        let _ = day1::solve_part2(data);
+                    }
+                    _ => {
+                        panic!("Invalid argument")
+                    }
+                },
                 _ => {
                     panic!("Invalid argument")
                 }
