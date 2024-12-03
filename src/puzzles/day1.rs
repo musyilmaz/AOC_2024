@@ -27,8 +27,8 @@ fn test_part2() {
 }
 
 pub fn solve_part1(data: String) -> i32 {
-    let mut left: Vec<_> = vec![];
-    let mut right: Vec<_> = vec![];
+    let mut left: Vec<i32> = vec![];
+    let mut right: Vec<i32> = vec![];
 
     for line in data.lines() {
         if let [left_val, right_val] = line
