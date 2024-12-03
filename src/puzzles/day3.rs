@@ -41,6 +41,8 @@ enum RegexMatchResult {
 }
 
 pub fn solve_part2(data: &String) -> i32 {
+    let mut processing: bool = true;
+    let mut sum: i32 = 0;
     let re = Regex::new(r"mul\(([0-9]+),([0-9]+)\)|do\(\)|don't\(\)").unwrap();
 
     let results: Vec<RegexMatchResult> = re
@@ -59,9 +61,6 @@ pub fn solve_part2(data: &String) -> i32 {
             }
         })
         .collect();
-
-    let mut processing: bool = true;
-    let mut sum: i32 = 0;
 
     for res in results {
         match res {
