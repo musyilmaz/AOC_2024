@@ -16,15 +16,22 @@ fn main() {
 
             match day {
                 "day1" => {
-                    let part_1_result = day1::solve_part1(data.clone());
-                    let part_2_result = day1::solve_part2(data.clone());
+                    let part_1_result = day1::solve_part1(&data);
+                    let part_2_result = day1::solve_part2(&data);
 
                     println!("{} {}: {:?}", "❗", "Part 1 - Result", part_1_result);
                     println!("{} {}: {:?}", "❗", "Part 2 - Result", part_2_result);
                 }
                 "day2" => {
-                    let part_1_result = day2::solve_part1(data.clone());
-                    let part_2_result = day2::solve_part2(data.clone());
+                    let part_1_result = day2::solve_part1(&data);
+                    let part_2_result = day2::solve_part2(&data);
+
+                    println!("{} {}: {:?}", "❗", "Part 1 - Result", part_1_result);
+                    println!("{} {}: {:?}", "❗", "Part 2 - Result", part_2_result);
+                }
+                "day3" => {
+                    let part_1_result = day3::solve_part1(&data);
+                    let part_2_result = day3::solve_part2(&data);
 
                     println!("{} {}: {:?}", "❗", "Part 1 - Result", part_1_result);
                     println!("{} {}: {:?}", "❗", "Part 2 - Result", part_2_result);

@@ -1,32 +1,34 @@
 #[test]
 fn test_part1() {
-    let result = solve_part1(String::from(
+    let test_string = String::from(
         "3   4
          4   3
          2   5
          1   3
          3   9
          3   3",
-    ));
+    );
+    let result = solve_part1(&test_string);
 
     assert_eq!(11, result)
 }
 
 #[test]
 fn test_part2() {
-    let result = solve_part2(String::from(
+    let test_string = String::from(
         "3   4
          4   3
          2   5
          1   3
          3   9
          3   3",
-    ));
+    );
+    let result = solve_part2(&test_string);
 
     assert_eq!(31, result)
 }
 
-pub fn solve_part1(data: String) -> i32 {
+pub fn solve_part1(data: &String) -> i32 {
     let mut left: Vec<i32> = vec![];
     let mut right: Vec<i32> = vec![];
 
@@ -56,7 +58,7 @@ pub fn solve_part1(data: String) -> i32 {
     return result;
 }
 
-pub fn solve_part2(data: String) -> usize {
+pub fn solve_part2(data: &String) -> usize {
     let mut left: Vec<usize> = vec![];
     let mut right: Vec<usize> = vec![];
 

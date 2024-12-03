@@ -1,32 +1,34 @@
 #[test]
 fn test_part1() {
-    let result = solve_part1(String::from(
+    let test_string = String::from(
         "7 6 4 2 1
          1 2 7 8 9
          9 7 6 2 1
          1 3 2 4 5
          8 6 4 4 1
          1 3 6 7 9",
-    ));
+    );
+    let result = solve_part1(&test_string);
 
     assert_eq!(2, result)
 }
 
 #[test]
 fn test_part2() {
-    let result = solve_part2(String::from(
+    let test_string = String::from(
         "7 6 4 2 1
          1 2 7 8 9
          9 7 6 2 1
          1 3 2 4 5
          8 6 4 4 1
          1 3 6 7 9",
-    ));
+    );
+    let result = solve_part2(&test_string);
 
     assert_eq!(4, result)
 }
 
-pub fn solve_part1(data: String) -> i32 {
+pub fn solve_part1(data: &String) -> i32 {
     let mut result: i32 = 0;
 
     for line in data.lines() {
@@ -45,7 +47,7 @@ pub fn solve_part1(data: String) -> i32 {
     return result;
 }
 
-pub fn solve_part2(data: String) -> i32 {
+pub fn solve_part2(data: &String) -> i32 {
     let mut result: i32 = 0;
 
     for line in data.lines() {
