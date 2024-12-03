@@ -53,8 +53,6 @@ pub fn solve_part1(data: String) -> i32 {
         .map(|(l, r)| (l - r).abs())
         .sum();
 
-    println!("{} {}: {:?}", "❗", "Result - Part 1:", result.to_string());
-
     return result;
 }
 
@@ -80,8 +78,6 @@ pub fn solve_part2(data: String) -> usize {
         .iter()
         .map(|l| l * right.iter().filter(|r| &l == r).count())
         .sum();
-
-    println!("{} {}: {:?}", "❗", "Result - Part 2:", result.to_string());
 
     return result;
 }

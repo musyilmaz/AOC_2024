@@ -12,21 +12,23 @@ fn main() {
         }
         _ => {
             let day = args[1].as_str();
-            let part = args[2].as_str();
             let data = read_data_file(day);
 
             match day {
-                "day1" => match part {
-                    "part1" => {
-                        let _ = day1::solve_part1(data);
-                    }
-                    "part2" => {
-                        let _ = day1::solve_part2(data);
-                    }
-                    _ => {
-                        panic!("Invalid argument")
-                    }
-                },
+                "day1" => {
+                    let part_1_result = day1::solve_part1(data.clone());
+                    let part_2_result = day1::solve_part2(data.clone());
+
+                    println!("{} {}: {:?}", "❗", "Part 1 - Result", part_1_result);
+                    println!("{} {}: {:?}", "❗", "Part 2 - Result", part_2_result);
+                }
+                "day2" => {
+                    let part_1_result = day2::solve_part1(data.clone());
+                    let part_2_result = day2::solve_part2(data.clone());
+
+                    println!("{} {}: {:?}", "❗", "Part 1 - Result", part_1_result);
+                    println!("{} {}: {:?}", "❗", "Part 2 - Result", part_2_result);
+                }
                 _ => {
                     panic!("Invalid argument")
                 }
