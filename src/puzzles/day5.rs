@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
-use std::collections::HashMap;
+use std::{cmp::Ordering, collections::HashMap};
 
 #[test]
 fn test_part1() {
@@ -42,10 +42,39 @@ fn test_part1() {
 
 #[test]
 fn test_part2() {
-    let test_string = String::from("");
+    let test_string = String::from(
+        "47|53
+        97|13
+        97|61
+        97|47
+        75|29
+        61|13
+        75|53
+        29|13
+        97|29
+        53|29
+        61|53
+        97|53
+        61|29
+        47|13
+        75|47
+        97|75
+        47|61
+        75|61
+        47|29
+        75|13
+        53|13
+
+        75,47,61,53,29
+        97,61,53,29,13
+        75,29,13
+        75,97,47,61,53
+        61,13,29
+        97,13,75,29,47",
+    );
     let result = solve_part2(&test_string);
 
-    assert_eq!(31, result)
+    assert_eq!(123, result)
 }
 
 #[derive(PartialEq)]
@@ -72,8 +101,24 @@ pub fn solve_part1(data: &String) -> i32 {
     total
 }
 
-pub fn solve_part2(data: &String) -> usize {
-    return 0;
+pub fn solve_part2(data: &String) -> i32 {
+    let mut total = 0;
+    let (r, u) = split_rules_and_updates(&data);
+
+    let rules = read_rules(r);
+    let updates = read_updates(u);
+
+    for update in updates {
+        let valid = check_update_validity(&update, &rules);
+
+        if !valid {
+            let valid_version = reorder_update(&update, &rules);
+
+            total += valid_version[valid_version.len() / 2]
+        }
+    }
+
+    total
 }
 
 fn check_update_validity(update: &Vec<i32>, rules: &HashMap<i32, Vec<i32>>) -> bool {
@@ -95,6 +140,27 @@ fn check_update_validity(update: &Vec<i32>, rules: &HashMap<i32, Vec<i32>>) -> b
     }
 
     validity
+}
+
+fn reorder_update(update: &Vec<i32>, rules: &HashMap<i32, Vec<i32>>) -> Vec<i32> {
+    let mut sorted = update.clone();
+
+    sorted.sort_by(|a, b| {
+        let rule_of_b = rules.get(b);
+
+        match rule_of_b {
+            Some(values_of_b) => {
+                if values_of_b.contains(a) {
+                    Ordering::Greater
+                } else {
+                    Ordering::Less
+                }
+            }
+            None => Ordering::Less,
+        }
+    });
+
+    return sorted.to_vec();
 }
 
 fn read_rules(rules: Vec<&str>) -> HashMap<i32, Vec<i32>> {
