@@ -49,8 +49,6 @@ const DIRECTIONS: [[i32; 2]; 8] = [
     [0, 1],
 ];
 
-const X_DIRECTIONS: [[i32; 2]; 4] = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
-
 const SEARCH: &str = "XMAS";
 const X_SEARCH: &str = "MAS";
 
