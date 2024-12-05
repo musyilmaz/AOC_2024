@@ -44,8 +44,8 @@ fn main() {
                     println!("{} {}: {:?}", "❗", "Part 2 - Result", part_2_result);
                 }
                 "day5" => {
-                    let part_1_result = day4::solve_part1(&data);
-                    let part_2_result = day4::solve_part2(&data);
+                    let part_1_result = day5::solve_part1(&data);
+                    let part_2_result = day5::solve_part2(&data);
 
                     println!("{} {}: {:?}", "❗", "Part 1 - Result", part_1_result);
                     println!("{} {}: {:?}", "❗", "Part 2 - Result", part_2_result);
