@@ -41,7 +41,7 @@ fn test_part2() {
     );
     let result = solve_part2(&test_string);
 
-    assert_eq!(0, result)
+    assert_eq!(34, result)
 }
 
 type Coordinate = (i32, i32);
@@ -78,8 +78,15 @@ pub fn solve_part1(data: &String) -> usize {
     antinodes.len()
 }
 
-pub fn solve_part2(data: &String) -> i32 {
-    0
+pub fn solve_part2(data: &String) -> usize {
+    let mut antinodes: Antinode = HashSet::new();
+    let grid = read_data(data);
+
+    for (_char, locations) in grid.locations.iter() {
+        solver_2(&mut antinodes, locations, &grid);
+    }
+
+    antinodes.len()
 }
 
 fn read_data(input: &str) -> Grid {
@@ -122,12 +129,49 @@ fn solver(antinodes: &mut Antinode, locations: &HashSet<Coordinate>, grid: &Grid
     }
 }
 
+fn solver_2(antinodes: &mut Antinode, locations: &HashSet<Coordinate>, grid: &Grid) {
+    for (&first, &second) in locations.iter().tuple_combinations() {
+        get_updated_antinode_coordinates(grid, antinodes, first, second);
+    }
+}
+
 fn get_antinode_coordinates(first: Coordinate, second: Coordinate) -> (Coordinate, Coordinate) {
-    let x_delta = first.0 - second.0;
-    let y_delta = first.1 - second.1;
+    let (x_delta, y_delta) = get_deltas(first, second);
 
     (
         (first.0 + x_delta, first.1 + y_delta),
         (second.0 - x_delta, second.1 - y_delta),
     )
+}
+
+fn get_updated_antinode_coordinates(
+    grid: &Grid,
+    antinodes: &mut Antinode,
+    first: Coordinate,
+    second: Coordinate,
+) {
+    let (x_delta, y_delta) = get_deltas(first, second);
+
+    let mut t_freq_pos = first;
+
+    while grid.contains_coordinate(t_freq_pos) {
+        antinodes.insert(t_freq_pos);
+
+        t_freq_pos = (t_freq_pos.0 + x_delta, t_freq_pos.1 + y_delta)
+    }
+
+    t_freq_pos = second;
+
+    while grid.contains_coordinate(t_freq_pos) {
+        antinodes.insert(t_freq_pos);
+
+        t_freq_pos = (t_freq_pos.0 - x_delta, t_freq_pos.1 - y_delta)
+    }
+}
+
+fn get_deltas(first: Coordinate, second: Coordinate) -> (i32, i32) {
+    let x_delta = first.0 - second.0;
+    let y_delta = first.1 - second.1;
+
+    (x_delta, y_delta)
 }
