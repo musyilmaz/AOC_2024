@@ -31,7 +31,7 @@ fn test_part2() {
     );
     let result = solve_part2(&test_string);
 
-    assert_eq!(0, result)
+    assert_eq!(11387, result)
 }
 
 pub fn solve_part1(data: &String) -> usize {
@@ -46,8 +46,18 @@ pub fn solve_part1(data: &String) -> usize {
     total
 }
 
-pub fn solve_part2(data: &String) -> u64 {
-    0
+pub fn solve_part2(data: &String) -> usize {
+    let inputs = read_data(data);
+    let mut total = 0;
+
+    for (result, values) in inputs {
+        let output = solver_2(result, &values);
+        if output {
+            total += result
+        }
+    }
+
+    total
 }
 
 fn solver(goal: usize, values: &[usize]) -> bool {
@@ -55,12 +65,36 @@ fn solver(goal: usize, values: &[usize]) -> bool {
         return goal == values[0];
     }
 
-    let (&first, rest) = values.split_first().unwrap();
+    let (&last, rest) = values.split_last().unwrap();
 
-    if goal % first == 0 && solver(goal / first, rest) {
+    if goal % last == 0 && solver(goal / last, rest) {
         return true;
     }
-    if goal > first && solver(goal - first, rest) {
+    if goal > last && solver(goal - last, rest) {
+        return true;
+    }
+    false
+}
+
+fn solver_2(goal: usize, values: &[usize]) -> bool {
+    if values.len() == 1 {
+        return goal == values[0];
+    }
+
+    let (&last, rest) = values.split_last().unwrap();
+
+    if goal % last == 0 && solver_2(goal / last, rest) {
+        return true;
+    }
+    if goal > last && solver_2(goal - last, rest) {
+        return true;
+    }
+
+    let last_len = last.ilog10() + 1;
+    let magnitude = 10u64.pow(last_len) as usize;
+    let goal_len = goal.ilog10() + 1;
+    let ending = goal % magnitude;
+    if goal_len > last_len && last == ending && solver_2(goal / magnitude, rest) {
         return true;
     }
     false
@@ -78,9 +112,6 @@ fn read_data(data: &String) -> Vec<(usize, Vec<usize>)> {
             .collect::<Vec<&str>>()
             .into_iter()
             .map(|v| v.trim().parse().unwrap())
-            .collect::<Vec<usize>>()
-            .into_iter()
-            .rev()
             .collect::<Vec<usize>>();
 
         inputs.push((r, vals))
