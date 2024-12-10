@@ -46,11 +46,13 @@ type Coordinate = (usize, usize);
 pub fn solve_part1(data: &String) -> usize {
     let map = read_data(data);
     let head_coordinates = generate_head_coordinates(&map);
-    solve(head_coordinates, map)
+    get_trail_score(head_coordinates, map)
 }
 
-pub fn solve_part2(data: &String) -> i32 {
-    0
+pub fn solve_part2(data: &String) -> usize {
+    let map = read_data(data);
+    let head_coordinates = generate_head_coordinates(&map);
+    get_trail_count(head_coordinates, map)
 }
 
 fn read_data(data: &str) -> Map {
@@ -89,7 +91,7 @@ fn generate_head_coordinates(map: &Map) -> Vec<Coordinate> {
     head_coordinates
 }
 
-fn solve(head_coordinates: Vec<Coordinate>, map: Map) -> usize {
+fn get_trail_score(head_coordinates: Vec<Coordinate>, map: Map) -> usize {
     let mut result: usize = 0;
 
     for (head_x, head_y) in head_coordinates {
@@ -109,21 +111,57 @@ fn solve(head_coordinates: Vec<Coordinate>, map: Map) -> usize {
                 continue;
             }
 
-            if curr_x > 0 && map.grid[curr_y][curr_x - 1] == target_height {
-                stack.push((curr_x - 1, curr_y))
-            }
-            if curr_y > 0 && map.grid[curr_y - 1][curr_x] == target_height {
-                stack.push((curr_x, curr_y - 1))
-            }
-            if curr_x + 1 < map.max_col && map.grid[curr_y][curr_x + 1] == target_height {
-                stack.push((curr_x + 1, curr_y))
-            }
-            if curr_y + 1 < map.max_row && map.grid[curr_y + 1][curr_x] == target_height {
-                stack.push((curr_x, curr_y + 1))
-            }
+            stack = check_neighbour_coordinates(&mut stack, (curr_x, curr_y), target_height, &map);
         }
         result += trails.len();
         trails.clear();
+    }
+
+    result
+}
+
+fn check_neighbour_coordinates(
+    stack: &mut Vec<Coordinate>,
+    (curr_x, curr_y): Coordinate,
+    target_height: usize,
+    map: &Map,
+) -> Vec<Coordinate> {
+    if curr_x > 0 && map.grid[curr_y][curr_x - 1] == target_height {
+        stack.push((curr_x - 1, curr_y))
+    }
+    if curr_y > 0 && map.grid[curr_y - 1][curr_x] == target_height {
+        stack.push((curr_x, curr_y - 1))
+    }
+    if curr_x + 1 < map.max_col && map.grid[curr_y][curr_x + 1] == target_height {
+        stack.push((curr_x + 1, curr_y))
+    }
+    if curr_y + 1 < map.max_row && map.grid[curr_y + 1][curr_x] == target_height {
+        stack.push((curr_x, curr_y + 1))
+    }
+
+    stack.to_vec()
+}
+
+fn get_trail_count(head_coordinates: Vec<Coordinate>, map: Map) -> usize {
+    let mut result = 0;
+
+    for (head_x, head_y) in head_coordinates {
+        let mut stack: Vec<Coordinate> = vec![];
+        stack.push((head_x, head_y));
+
+        while stack.len() > 0 {
+            let (curr_x, curr_y) = stack.pop().unwrap();
+
+            let curr_height = map.grid[curr_y][curr_x];
+            let target_height = curr_height + 1;
+
+            if curr_height == 9 {
+                result += 1;
+                continue;
+            }
+
+            stack = check_neighbour_coordinates(&mut stack, (curr_x, curr_y), target_height, &map);
+        }
     }
 
     result
