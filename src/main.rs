@@ -88,8 +88,9 @@ fn main() {
 
                 "day11" => {
                     let iteration_part_1 = 25;
+                    let iteration_part_2 = 75;
                     let part_1_result = day11::solve_part1(&data, iteration_part_1);
-                    let part_2_result = day11::solve_part2(&data);
+                    let part_2_result = day11::solve_part2(&data, iteration_part_2);
 
                     println!("{} {}: {:?}", "❗", "Part 1 - Result", part_1_result);
                     println!("{} {}: {:?}", "❗", "Part 2 - Result", part_2_result);
