@@ -1,5 +1,7 @@
 mod puzzles;
 
+use glam::IVec2;
+
 use crate::puzzles::*;
 use std::fs;
 
@@ -108,11 +110,9 @@ fn main() {
                     println!("{} {}: {:?}", "❗", "Part 1 - Result", part_1_result);
                     println!("{} {}: {:?}", "❗", "Part 2 - Result", part_2_result);
                 }
-                _ => {
-                    panic!("Invalid argument")
-                }
                 "day14" => {
-                    let part_1_result = day14::solve_part1(&data);
+                    let map: IVec2 = IVec2::new(101, 103);
+                    let part_1_result = day14::solve_part1(&data, map);
                     let part_2_result = day14::solve_part2(&data);
 
                     println!("{} {}: {:?}", "❗", "Part 1 - Result", part_1_result);
