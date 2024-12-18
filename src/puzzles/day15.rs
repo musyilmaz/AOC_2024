@@ -1,3 +1,4 @@
+use glam::IVec2;
 use nom::InputIter;
 
 #[test]
@@ -40,7 +41,7 @@ fn test_part2() {
     assert_eq!(0, result)
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 enum GridObject {
     Empty,
     Wall,
@@ -48,7 +49,7 @@ enum GridObject {
     Robot,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 enum Direction {
     Up,
     Right,
@@ -56,12 +57,22 @@ enum Direction {
     Left,
 }
 
-type Map = Vec<Vec<GridObject>>;
+type Map = Vec<Vec<(GridObject, IVec2)>>;
 
 pub fn solve_part1(data: &str) -> i32 {
-    let (map, movements) = parse_data(data);
-    println!("{} {}: {:?}", "❗", "movements", movements);
-    println!("{} {}: {:?}", "❗", "map", map);
+    let dirs = [
+        IVec2::new(0, -1),
+        IVec2::new(1, 0),
+        IVec2::new(0, 1),
+        IVec2::new(-1, 0),
+    ];
+
+    let (mut map, movements) = parse_data(data);
+
+    for movement in movements {
+        let robot = find_robot(&map);
+        println!("{} {}: {:?}", "❗", "robot", robot);
+    }
     0
 }
 
@@ -82,16 +93,18 @@ fn parse_data(data: &str) -> (Map, Vec<Direction>) {
 }
 
 fn parse_grid(grid_data: &str) -> Map {
-    let mut grid: Vec<Vec<GridObject>> = vec![];
-    for line in grid_data.lines() {
-        let mut row: Vec<GridObject> = vec![];
+    let mut grid: Map = vec![];
+    for (y, line) in grid_data.lines().enumerate() {
+        let mut row: Vec<(GridObject, IVec2)> = vec![];
 
-        for letter in line.trim().chars() {
+        for (x, letter) in line.trim().chars().enumerate() {
+            let coordinate = IVec2::new(x as i32, y as i32);
+
             match letter {
-                '#' => row.push(GridObject::Wall),
-                'O' => row.push(GridObject::Box),
-                '@' => row.push(GridObject::Robot),
-                _ => row.push(GridObject::Empty),
+                '#' => row.push((GridObject::Wall, coordinate)),
+                'O' => row.push((GridObject::Box, coordinate)),
+                '@' => row.push((GridObject::Robot, coordinate)),
+                _ => row.push((GridObject::Empty, coordinate)),
             }
         }
         grid.push(row);
@@ -111,4 +124,20 @@ fn parse_movement(movement_data: &str) -> Vec<Direction> {
         }
     }
     movements
+}
+
+fn find_robot(map: &Map) -> IVec2 {
+    let mut robot_pos = IVec2::new(0, 0);
+
+    for row in map.iter() {
+        for cell in row.iter() {
+            if cell.0 != GridObject::Robot {
+                continue;
+            }
+
+            robot_pos = cell.1;
+        }
+    }
+
+    robot_pos
 }
