@@ -66,6 +66,10 @@ pub fn solve_part1(data: &str) -> i32 {
         let next_pos = robot_coor + movement;
 
         let Some(next) = map.get(&next_pos) else {
+            println!("==========================");
+            println!("Movement as {:?}", movement);
+            println!("Moving Robot without anything else to {:?}", next_pos);
+            println!("==========================");
             map.remove(&robot_coor);
             map.insert(next_pos, GridObject::Robot);
 
